@@ -6,7 +6,7 @@
 
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { TodoType } from "../Todos";
 import { genNextTodoId } from "@/util/todosIO";
