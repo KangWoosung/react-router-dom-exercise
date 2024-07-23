@@ -37,6 +37,14 @@ type ShadCNInputProps = React.HTMLAttributes<HTMLInputElement> & {
   className?: string;
 };
 
+// const isDate = (value: string | boolean) => {
+//   if (typeof value === 'string') {
+//     const date = new Date(value);
+//     return !isNaN(date.getTime());
+//   }
+//   return false;
+// };
+
 const ShadCNInputDate = ({
   form,
   name,
@@ -71,7 +79,7 @@ const ShadCNInputDate = ({
                   )}
                 >
                   {field.value ? (
-                    format(field.value as Date, "PPP")
+                    format(new Date(field.value as string), "PPP")
                   ) : (
                     <span>{placeholder}</span>
                   )}
@@ -85,7 +93,7 @@ const ShadCNInputDate = ({
             >
               <Calendar
                 mode="single"
-                selected={field.value as Date}
+                selected={new Date(field.value as string)}
                 onSelect={(e) => {
                   field.onChange(e);
                   setIsPopoverOpen(false);

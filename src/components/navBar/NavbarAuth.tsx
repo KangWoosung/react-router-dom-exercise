@@ -4,7 +4,6 @@
 */
 
 import { useAuth } from "@/context/AuthProvider";
-import React from "react";
 import { IoIosLogIn } from "react-icons/io";
 import NavbarAvatar from "./NavbarAvatar";
 import { Link } from "react-router-dom";

@@ -1,6 +1,6 @@
 import NavbarAuth from "@/components/navBar/NavbarAuth";
 import { ModeToggle } from "@/components/navBar/ThemeToggler";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {

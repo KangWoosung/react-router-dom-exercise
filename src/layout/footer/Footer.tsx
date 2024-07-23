@@ -5,8 +5,6 @@ flex h-12 items-center justify-center  w-[100dvw]  bg-gray-200 p-3 text-xl
 
 */
 
-import React from "react";
-
 const Footer = () => {
   return (
     <footer className="flex items-center justify-center w-[100dvw]  bg-accent ">
