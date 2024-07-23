@@ -33,8 +33,8 @@ type UseLoaderDataType = {
 const Users: React.FC = () => {
   const { users } = useLoaderData() as UseLoaderDataType;
   return (
-    <div className="bg-indigo-50 min-h-screen p-8">
-      <h1 className="text-4xl font-bold text-indigo-900 mb-8">Users</h1>
+    <div className="bg-background min-h-screen p-8">
+      <h1 className="text-4xl font-bold mb-8">Users</h1>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {users.map((user: UserType) => (
           <Link
@@ -43,14 +43,14 @@ const Users: React.FC = () => {
           >
             <div
               key={user.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              className="bg-background rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-accent"
             >
-              <div className="bg-indigo-900 p-4">
-                <h2 className="text-xl font-semibold text-white">
+              <div className="bg-foreground p-4">
+                <h2 className="text-xl font-semibold text-background">
                   {user.name}
                 </h2>
               </div>
-              <div className="p-4 space-y-2">
+              <div className="p-4 space-y-2 bg-accent">
                 <div className="text-navy-600">
                   <span className="font-medium">Email:</span> {user.email}
                 </div>

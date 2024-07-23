@@ -15,41 +15,8 @@ Todo Type:
 2. localStorage 에 todos 를 저장해주고, todos 만 action 을 localStorage 에서 처리해주자.
 3. 여기엔 Framer Motion 을 이용한 animation 을 추가해주자..
 
-*/
 
-import { axiosRequest } from "@/util/axiosInstance";
-import {
-  genNextTodoId,
-  loadTodosFromLocalStorage,
-  saveTodosToLocalStorage,
-} from "@/util/todosIO";
-import { useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
-import AddTodoForm from "./todo/AddTodoForm";
-import axios, { CancelTokenSource } from "axios";
 
-export type TodosLoaderDataType = {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-};
-export type TodoType = TodosLoaderDataType;
-
-const Todos = () => {
-  const todos = useLoaderData() as TodosLoaderDataType[];
-  const nextId = genNextTodoId(todos);
-  console.log(nextId);
-
-  useEffect(() => {
-    saveTodosToLocalStorage(todos);
-  }, [todos]);
-
-  const handleTodoSubmit = () => {
-    console.log("Todo Submitted");
-  };
-
-  return (
     <div className="flex flex-col justify-center items-center w-full p-4">
       <div className="w-3/4">
         Todos
@@ -68,8 +35,86 @@ const Todos = () => {
           </div>
         ))}
       </div>
+*/
+
+import { axiosRequest } from "@/util/axiosInstance";
+import {
+  loadTodosFromLocalStorage,
+  saveTodosToLocalStorage,
+} from "@/util/todosIO";
+import { useEffect, useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import AddTodoForm from "./todo/AddTodoForm";
+import axios, { CancelTokenSource } from "axios";
+import { AnimatePresence } from "framer-motion";
+import Todo from "./Todo";
+
+export type TodosLoaderDataType = {
+  userId?: number;
+  id: number;
+  title: string;
+  completed?: boolean;
+};
+export type TodoType = TodosLoaderDataType;
+
+const Todos = () => {
+  const todos = useLoaderData() as TodosLoaderDataType[];
+  const [todoItems, setTodoItems] = useState(todos);
+  const [todosCnt, setTodosCnt] = useState<number>(todos.length);
+  const [undoneCnt, setUndoneCnt] = useState(0);
+
+  useEffect(() => {
+    saveAndSetTodos(todos);
+  }, [todos]);
+
+  const saveAndSetTodos = (todos: TodoType[]) => {
+    saveTodosToLocalStorage(todos);
+    setTodoItems(todos);
+    setTodosCnt(todos.length);
+    setUndoneCnt(todos.filter((todo) => !todo.completed).length);
+  };
+
+  const handleCheck = (id: number) => {
+    const newTodo = todoItems.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    saveAndSetTodos(newTodo);
+  };
+
+  const removeElement = (id: number) => {
+    const newTodo = todoItems.filter((todo) => todo.id !== id);
+    saveAndSetTodos(newTodo);
+  };
+
+  const handleTodoSubmit = (todos: TodoType[]) => {
+    console.log("Todo Submitted");
+    saveAndSetTodos(todos);
+  };
+
+  return (
+    <div className="w-full space-y-3">
+      <div>You have {todosCnt} todos left</div>
+      <div>{undoneCnt} todos are not finished</div>
+      <AnimatePresence>
+        {todoItems
+          .sort((a, b) => b.id - a.id)
+          .slice(0, 10)
+          .map((todo) => (
+            <Todo
+              handleCheck={handleCheck}
+              removeElement={removeElement}
+              id={todo.id as number}
+              key={todo.id}
+              checked={todo.completed}
+            >
+              {/* {todo.id} */}
+              {todo.title}
+            </Todo>
+          ))}
+      </AnimatePresence>
+
       {/* // Add Todo Form */}
-      <AddTodoForm nextId={nextId} handleTodoSubmit={handleTodoSubmit} />
+      <AddTodoForm todos={todoItems} handleTodoSubmit={handleTodoSubmit} />
     </div>
   );
 };
@@ -93,9 +138,9 @@ const loader = async () => {
       config,
     });
     if (todosResult?.cancelToken) cancelTokens.push(todosResult.cancelToken);
-    todosData = todosResult.data;
+    todosData = todosResult.data as TodoType[];
 
-    return todosData;
+    return todosData.sort((a, b) => b.id - a.id);
   } catch (e) {
     if (axios.isCancel(e)) {
       console.log("Request canceled", e.message);

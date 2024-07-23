@@ -7,7 +7,7 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 flex h-12 items-center justify-center  w-[100dvw]  bg-gray-200 p-3 text-md">
+    <header className="sticky top-0 flex h-12 items-center justify-center  w-[100dvw] bg-accent p-3 text-md z-50">
       <div className="flex items-center justify-between w-full max-w-screen-lg ">
         <Link to="/" className="text-xl">
           🐐

@@ -4,60 +4,81 @@
 
 */
 
-import React from "react";
-import { Form } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import ShadCNTextarea from "@/components/ShadCNTextarea";
-import {
-  AddTodoFormSchema,
-  AddTodoFormSchemaType,
-} from "@/schemas/AddTodoFormSchema";
-import ShadCNButton from "@/components/ShadCNButton";
-import ShadCNCheckbox from "@/components/ShadCNCheckbox";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { FiPlus } from "react-icons/fi";
+import { TodoType } from "../Todos";
+import { genNextTodoId } from "@/util/todosIO";
 
 type AddTodoFormProps = {
-  nextId: number;
-  handleTodoSubmit: () => void;
+  todos: TodoType[];
+  handleTodoSubmit: (todoItems: TodoType[]) => void;
 };
 
-const AddTodoForm = ({ nextId, handleTodoSubmit }: AddTodoFormProps) => {
-  const form = useForm<AddTodoFormSchemaType>({
-    resolver: zodResolver(AddTodoFormSchema),
-    defaultValues: {
-      title: "",
+const AddTodoForm = ({ todos, handleTodoSubmit }: AddTodoFormProps) => {
+  const [visible, setVisible] = useState(false);
+  const [text, setText] = useState("");
+  const nextId = genNextTodoId(todos);
+
+  const handleSubmit = () => {
+    if (!text.length) {
+      return;
+    }
+
+    const newTodo = {
+      id: nextId,
+      title: text,
       completed: false,
-    },
-  });
+    };
+    handleTodoSubmit([...todos, newTodo]);
+    setText("");
+  };
 
   return (
-    <div className="w-10/12 flex justify-center">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleTodoSubmit)}
-          className="flex flex-col justify-center items-center w-auto space-y-6"
+    <div className="flex flex-row justify-center items-center w-full">
+      <div className=" bottom-6 w-full mx-auto max-w-xl px-4">
+        <AnimatePresence>
+          {visible && (
+            <motion.form
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 25 }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+              className="mb-6 w-full rounded border border-zinc-700 bg-accent p-3"
+            >
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="What do you need to do?"
+                className="h-24 w-full resize-none rounded  p-3 text-sm  placeholder-zinc-500 caret-zinc-50 focus:outline-0"
+              />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5"></div>
+                <button
+                  type="submit"
+                  className="rounded bg-indigo-600 px-1.5 py-1 text-xs text-indigo-50 transition-colors hover:bg-indigo-500"
+                >
+                  Submit
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+        <button
+          onClick={() => setVisible((pv) => !pv)}
+          className="grid w-full place-content-center rounded-full border border-zinc-700  py-3 text-lg bg-popover hover:bg-accent active:bg-accent"
         >
-          <ShadCNTextarea
-            form={form}
-            name="todo"
-            label="할 일"
-            description="할 일을 입력해주세요"
-            className="w-full border p-2"
+          <FiPlus
+            className={`transition-transform ${
+              visible ? "rotate-45" : "rotate-0"
+            }`}
           />
-          <ShadCNCheckbox
-            form={form}
-            name="completed"
-            label="완료 여부"
-            className="w-full border p-2"
-          />
-          <ShadCNButton
-            type="submit"
-            className="bg-indigo-500 text-white px-4 py-2 rounded-lg"
-          >
-            추가
-          </ShadCNButton>
-        </form>
-      </Form>
+        </button>
+      </div>
     </div>
   );
 };

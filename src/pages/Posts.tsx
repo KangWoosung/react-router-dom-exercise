@@ -47,22 +47,20 @@ const Posts: React.FC = () => {
   };
 
   return (
-    <div className="bg-indigo-50 w-full min-h-screen p-8">
-      <h1 className="text-4xl font-bold text-indigo-900 mb-8">Posts</h1>
+    <div className="bg-accent w-full min-h-screen p-8">
+      <h1 className="text-4xl font-bold mb-8">Posts</h1>
       <div className="space-y-4 mb-8">
         {currentPosts.map((post) => (
           <div
             key={post.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            className="bg-background rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
           >
             <Link
               to={`/posts/${post.id}`}
-              className="flex items-center p-4 hover:bg-indigo-50 transition-colors duration-300"
+              className="flex items-center p-4 hover:bg-accent transition-colors duration-300"
             >
-              <span className="text-indigo-900 font-semibold w-12 flex-shrink-0">
-                {post.id}
-              </span>
-              <h2 className="text-lg font-semibold text-indigo-900 hover:text-indigo-700 transition-colors duration-300 flex-grow">
+              <span className=" font-medium w-12 flex-shrink-0">{post.id}</span>
+              <h2 className="text-md font-medium hover:text-indigo-700 transition-colors duration-300 flex-grow">
                 {post.title}
               </h2>
             </Link>

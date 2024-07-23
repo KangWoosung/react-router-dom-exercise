@@ -68,35 +68,34 @@ const Post = () => {
   const { postId } = useParams();
   console.log("Component postId:", postId);
   return (
-    <div className="bg-indigo-50 w-full min-h-screen p-8">
+    <div className="bg-accent w-full min-h-screen p-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-indigo-900 mb-4">Post</h1>
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-          <div className="bg-indigo-900 p-4 text-white">
+        <h1 className="text-4xl font-bold mb-4">Post</h1>
+        <div className="bg-background rounded-lg shadow-md overflow-hidden mb-8">
+          <div className="bg-secondary p-4 border border-background">
             <h2 className="text-2xl font-semibold">PostId: {post.id}</h2>
           </div>
           <div className="p-6 space-y-4">
-            <div className="text-indigo-800">
+            <div className="">
               <span className="font-medium">Author:</span> {user.name}
             </div>
-            <div className="text-indigo-800">
+            <div className="">
               <span className="font-medium">Email:</span> {user.email}
             </div>
-            <div className="text-xl font-semibold text-indigo-900">
-              {post.title}
-            </div>
-            <p className="text-gray-700">{post.body}</p>
+            <div className="text-xl font-semibold ">{post.title}</div>
+            <p className="">{post.body}</p>
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-indigo-900 mb-4">Comments</h2>
+        <h2 className="text-2xl font-bold mb-4">Comments</h2>
         <div className="space-y-6">
           {comments.map((comment: CommentType) => (
-            <div key={comment.id} className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold text-indigo-800 mb-2">
-                {comment.name}
-              </h3>
-              <p className="text-gray-700">{comment.body}</p>
+            <div
+              key={comment.id}
+              className="bg-background rounded-lg shadow-md p-4"
+            >
+              <h3 className="text-lg font-semibold mb-2">{comment.name}</h3>
+              <p className="text-gray-500">{comment.body}</p>
             </div>
           ))}
         </div>
