@@ -110,6 +110,21 @@ const loader = async () => {
   }
 };
 
+/*
+// action
+const action = async (req) => {
+  const formData = await req.formData();
+  const title = formData.get("title");
+  const completed = formData.get("completed");
+
+  const config = { method: "POST", body: JSON.stringify(title, completed) };
+  const todo = await axiosRequest({
+    endPoint: "/new",
+    config,
+  });
+};
+*/
+
 const TodosRoute = {
   element: <Todos />,
   loader,

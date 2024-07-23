@@ -24,7 +24,7 @@ export const axiosRequest = async ({
       ...config,
       cancelToken: source.token,
     });
-    // console.log("axios Response: " + response.data);
+    // Abort 펑션인 cancelToken 을 함께 반환합니다.
     return { data: response.data, cancelToken: source };
   } catch (e) {
     if (axios.isAxiosError(e)) {

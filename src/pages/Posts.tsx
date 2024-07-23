@@ -20,14 +20,11 @@ export type PostType = {
   title: string;
   body: string;
 };
-type PostsType = {
-  posts: PostType[];
-};
 
 const ITEMS_PER_PAGE = 10;
 
 const Posts: React.FC = () => {
-  const data = useLoaderData() as PostsType;
+  const data = useLoaderData() as PostType[];
   const [searchParams, setSearchParams] = useSearchParams();
 
   const currentPage = Number(searchParams.get("page") || "1");
@@ -37,13 +34,13 @@ const Posts: React.FC = () => {
     const fetchPosts = () => {
       const indexOfLastPost = currentPage * ITEMS_PER_PAGE;
       const indexOfFirstPost = indexOfLastPost - ITEMS_PER_PAGE;
-      setCurrentPosts(data?.posts.slice(indexOfFirstPost, indexOfLastPost));
+      setCurrentPosts(data?.slice(indexOfFirstPost, indexOfLastPost));
     };
 
     fetchPosts();
-  }, [currentPage, data?.posts]);
+  }, [currentPage, data]);
 
-  const totalPages = Math.ceil((data?.posts?.length || 0) / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil((data?.length || 0) / ITEMS_PER_PAGE);
 
   const handlePageChange = (pageNumber: number) => {
     setSearchParams({ page: pageNumber.toString() });
@@ -96,7 +93,8 @@ const loader = async () => {
     if (postsResult?.cancelToken) cancelTokens.push(postsResult.cancelToken);
     const postsData: PostType[] = postsResult?.data;
 
-    return { postsData };
+    console.log(postsData);
+    return postsData;
   } catch (e) {
     if (axios.isCancel(e)) {
       console.log("Request canceled", e.message);
