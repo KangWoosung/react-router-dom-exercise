@@ -8,12 +8,6 @@ import React, { useEffect } from "react";
 import { FiClock, FiTrash2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 
-// handleCheck={handleCheck}
-// removeElement={removeElement}
-// id={todo.id}
-// key={todo.id}
-// checked={todo.completed}
-
 type TodoPropsType = {
   removeElement: (id: number) => void;
   handleCheck: (id: number) => void;
